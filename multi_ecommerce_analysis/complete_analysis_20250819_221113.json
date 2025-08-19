@@ -1,0 +1,114 @@
+{
+  "shopify_implementation": {
+    "config": {
+      "name": "shopify_implementation",
+      "connection_string": "sqlite:///samples/shopify_style_ecommerce.db",
+      "type": "sqlite",
+      "description": "Shopify-style e-commerce: customers, products, orders, variants, collections"
+    },
+    "analysis": {
+      "error": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\"\n  quota_id: \"GenerateContentInputTokensPerModelPerMinute-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\nviolations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\nviolations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\n, links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, retry_delay {\n  seconds: 49\n}\n]",
+      "domain_analysis": {
+        "business_domain": "Unknown",
+        "confidence_score": 0
+      },
+      "relationship_analysis": {
+        "primary_relationships": []
+      },
+      "data_quality_assessment": {
+        "quality_score": 0
+      },
+      "recommendations": {
+        "immediate_improvements": []
+      }
+    },
+    "documentation": "# Database Schema Analysis Report\n\n**Generated:** 2025-08-19 22:11:11\n**Database Type:** sqlite\n\n## Executive Summary\n\n**Business Domain:** Unknown\n**Application Type:** Unknown\n**Quality Score:** 0/100\n\n## Key Findings\n\n### Business Entities\n- None identified\n\n### Data Quality Issues\n- None identified\n\n### Recommendations\n- None identified\n\n## Technical Details\n\n### Schema Overview\n- **Total Tables/Collections:** 4\n- **Database Type:** sqlite\n\n### Performance Considerations\n- None identified\n\n### Security & Privacy\n- None identified\n",
+    "status": "success",
+    "timestamp": "2025-08-19T22:11:11.389525"
+  },
+  "magento_implementation": {
+    "config": {
+      "name": "magento_implementation",
+      "connection_string": "sqlite:///samples/magento_style_ecommerce.db",
+      "type": "sqlite",
+      "description": "Magento-style e-commerce: EAV model, websites, stores, catalog entities"
+    },
+    "analysis": {
+      "error": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\"\n  quota_id: \"GenerateContentInputTokensPerModelPerMinute-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\nviolations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\nviolations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\n, links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, retry_delay {\n  seconds: 49\n}\n]",
+      "domain_analysis": {
+        "business_domain": "Unknown",
+        "confidence_score": 0
+      },
+      "relationship_analysis": {
+        "primary_relationships": []
+      },
+      "data_quality_assessment": {
+        "quality_score": 0
+      },
+      "recommendations": {
+        "immediate_improvements": []
+      }
+    },
+    "documentation": "# Database Schema Analysis Report\n\n**Generated:** 2025-08-19 22:11:11\n**Database Type:** sqlite\n\n## Executive Summary\n\n**Business Domain:** Unknown\n**Application Type:** Unknown\n**Quality Score:** 0/100\n\n## Key Findings\n\n### Business Entities\n- None identified\n\n### Data Quality Issues\n- None identified\n\n### Recommendations\n- None identified\n\n## Technical Details\n\n### Schema Overview\n- **Total Tables/Collections:** 3\n- **Database Type:** sqlite\n\n### Performance Considerations\n- None identified\n\n### Security & Privacy\n- None identified\n",
+    "status": "success",
+    "timestamp": "2025-08-19T22:11:11.800825"
+  },
+  "woocommerce_implementation": {
+    "config": {
+      "name": "woocommerce_implementation",
+      "connection_string": "sqlite:///samples/woocommerce_style_ecommerce.db",
+      "type": "sqlite",
+      "description": "WooCommerce-style e-commerce: WordPress integration, posts, meta tables"
+    },
+    "analysis": {
+      "error": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\nviolations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\nviolations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\"\n  quota_id: \"GenerateContentInputTokensPerModelPerMinute-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\n, links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, retry_delay {\n  seconds: 47\n}\n]",
+      "domain_analysis": {
+        "business_domain": "Unknown",
+        "confidence_score": 0
+      },
+      "relationship_analysis": {
+        "primary_relationships": []
+      },
+      "data_quality_assessment": {
+        "quality_score": 0
+      },
+      "recommendations": {
+        "immediate_improvements": []
+      }
+    },
+    "documentation": "# Database Schema Analysis Report\n\n**Generated:** 2025-08-19 22:11:12\n**Database Type:** sqlite\n\n## Executive Summary\n\n**Business Domain:** Unknown\n**Application Type:** Unknown\n**Quality Score:** 0/100\n\n## Key Findings\n\n### Business Entities\n- None identified\n\n### Data Quality Issues\n- None identified\n\n### Recommendations\n- None identified\n\n## Technical Details\n\n### Schema Overview\n- **Total Tables/Collections:** 3\n- **Database Type:** sqlite\n\n### Performance Considerations\n- None identified\n\n### Security & Privacy\n- None identified\n",
+    "status": "success",
+    "timestamp": "2025-08-19T22:11:12.823227"
+  },
+  "pattern_analysis": {
+    "error": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\"\n  quota_id: \"GenerateContentInputTokensPerModelPerMinute-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\nviolations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\nviolations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-1.5-pro\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n}\n, links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, retry_delay {\n  seconds: 47\n}\n]",
+    "domain_confirmation": {
+      "confirmed_domain": "Unknown",
+      "confidence_score": 0
+    },
+    "common_attributes": {
+      "shared_entities": [],
+      "shared_relationships": []
+    },
+    "integration_opportunities": {
+      "data_standardization": [],
+      "api_unification": [],
+      "data_migration_paths": []
+    }
+  },
+  "cross_database_insights": {
+    "analyzed_databases": 3,
+    "total_entities": 10,
+    "identified_domains": [
+      "Unknown"
+    ],
+    "architecture_pattern": "Single-domain"
+  },
+  "analysis_summary": {
+    "total_databases": 3,
+    "successful_analyses": 3,
+    "failed_analyses": 0,
+    "success_rate": "100.0%",
+    "analysis_timestamp": "2025-08-19T22:11:13.346958"
+  }
+}
