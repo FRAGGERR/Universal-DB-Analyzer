@@ -7,7 +7,7 @@ from dataclasses import dataclass
 @dataclass
 class GeminiConfig:
     api_key: str
-    model_name: str = "gemini-1.5-pro"
+    model_name: str = "gemini-1.5-flash"  # Changed from gemini-1.5-pro to gemini-1.5-flash
     temperature: float = 0.1
     max_output_tokens: int = 8192
 
@@ -336,120 +336,265 @@ Focus on:
 
     def _build_pattern_analysis_prompt(self, databases_analysis: Dict[str, Any]) -> str:
         """
-        Build the main pattern analysis prompt for Gemini.
+        Build comprehensive pattern analysis prompt for deep reverse engineering insights.
         """
         return f"""
-You are analyzing multiple database implementations of the SAME BUSINESS DOMAIN to identify common patterns, shared attributes, and implementation differences.
+You are a senior database architect and reverse engineering expert analyzing multiple e-commerce database implementations to extract DEEP INSIGHTS for understanding data models, business logic, and integration opportunities.
 
 Database Analyses:
 {json.dumps(databases_analysis, indent=2, default=str)}
 
-
-Please provide a comprehensive JSON analysis focusing on:
+Provide a COMPREHENSIVE reverse engineering analysis in this exact JSON format:
 
 {{
-  "domain_confirmation": {{
-    "confirmed_domain": "The shared business domain across all databases",
-    "confidence_score": 95,
-    "domain_evidence": ["Evidence that confirms this domain"]
-  }},
-  "common_attributes": {{
-    "shared_entities": [
-      {{
-        "entity_name": "Customer/User",
-        "found_in_databases": ["db1", "db2", "db3"],
-        "common_fields": ["email", "name", "created_date"],
-        "implementation_variations": {{
-          "db1": {{"table_name": "customers", "key_fields": ["customer_id", "email"]}},
-          "db2": {{"table_name": "users", "key_fields": ["user_id", "email_address"]}}
+  "reverse_engineering_insights": {{
+    "domain_analysis": {{
+      "confirmed_business_domain": "e-commerce",
+      "domain_confidence": 98,
+      "sub_domains_identified": ["customer_management", "order_processing", "product_catalog", "inventory_management"],
+      "business_processes_mapped": [
+        "Customer registration and profile management",
+        "Product catalog browsing and search",
+        "Order placement and payment processing",
+        "Order fulfillment and shipping tracking"
+      ],
+      "industry_patterns": ["Standard e-commerce workflow", "Multi-tenant architecture", "Payment integration patterns"]
+    }},
+    "cross_platform_entity_mapping": {{
+      "customer_entity_variations": [
+        {{
+          "platform": "shopify_implementation",
+          "table_name": "customers",
+          "key_fields": ["customer_id", "email", "first_name", "last_name"],
+          "unique_features": ["shop_id for multi-tenancy", "total_spent tracking"],
+          "business_logic": "Customer data tied to specific shop instances"
+        }},
+        {{
+          "platform": "magento_implementation", 
+          "table_name": "customer_entity",
+          "key_fields": ["entity_id", "email", "firstname", "lastname"],
+          "unique_features": ["EAV model flexibility", "entity-based architecture"],
+          "business_logic": "Flexible attribute system for customer data"
+        }},
+        {{
+          "platform": "woocommerce_implementation",
+          "table_name": "wp_users",
+          "key_fields": ["ID", "user_login", "user_email", "display_name"],
+          "unique_features": ["WordPress integration", "user_login for authentication"],
+          "business_logic": "WordPress user system integration"
+        }}
+      ],
+      "order_entity_variations": [
+        {{
+          "platform": "shopify_implementation",
+          "table_name": "orders",
+          "key_fields": ["order_id", "order_number", "customer_id", "total_price"],
+          "unique_features": ["order_number for display", "financial_status tracking"],
+          "business_logic": "Order tracking with financial status management"
+        }},
+        {{
+          "platform": "magento_implementation",
+          "table_name": "sales_order", 
+          "key_fields": ["entity_id", "increment_id", "customer_id", "grand_total"],
+          "unique_features": ["increment_id for order numbering", "entity-based design"],
+          "business_logic": "Sales order management with entity framework"
+        }}
+      ],
+      "product_entity_variations": [
+        {{
+          "platform": "shopify_implementation",
+          "table_name": "products",
+          "key_fields": ["product_id", "title", "handle", "vendor"],
+          "unique_features": ["handle for SEO-friendly URLs", "vendor tracking"],
+          "business_logic": "Product catalog with SEO optimization"
+        }},
+        {{
+          "platform": "magento_implementation",
+          "table_name": "catalog_product_entity",
+          "key_fields": ["entity_id", "sku"],
+          "unique_features": ["SKU-based identification", "EAV model for attributes"],
+          "business_logic": "Flexible product attribute system"
+        }},
+        {{
+          "platform": "woocommerce_implementation",
+          "table_name": "wp_posts",
+          "key_fields": ["ID", "post_title", "post_content", "post_type"],
+          "unique_features": ["WordPress post system", "content-based product storage"],
+          "business_logic": "WordPress content management for products"
+        }}
+      ]
+    }},
+    "architectural_pattern_comparison": {{
+      "design_philosophies": {{
+        "shopify_style": {{
+          "approach": "Multi-tenant SaaS architecture",
+          "strengths": ["Scalable multi-tenancy", "Clear separation of concerns"],
+          "weaknesses": ["Complexity in data isolation", "Potential performance overhead"],
+          "use_case_fit": "SaaS e-commerce platforms"
+        }},
+        "magento_style": {{
+          "approach": "Enterprise EAV (Entity-Attribute-Value) model",
+          "strengths": ["Extreme flexibility", "Customizable attributes"],
+          "weaknesses": ["Complex queries", "Performance challenges"],
+          "use_case_fit": "Enterprise e-commerce with complex requirements"
+        }},
+        "woocommerce_style": {{
+          "approach": "WordPress integration with content management",
+          "strengths": ["Easy content management", "WordPress ecosystem"],
+          "weaknesses": ["Limited scalability", "WordPress dependency"],
+          "use_case_fit": "Small to medium businesses with content needs"
+        }}
+      }},
+      "scalability_analysis": {{
+        "horizontal_scaling": {{
+          "shopify": "Excellent - designed for multi-tenancy",
+          "magento": "Good - entity-based design supports sharding",
+          "woocommerce": "Limited - WordPress architecture constraints"
+        }},
+        "vertical_scaling": {{
+          "shopify": "Good - optimized for cloud deployment",
+          "magento": "Challenging - complex queries and joins",
+          "woocommerce": "Moderate - depends on WordPress optimization"
         }}
       }}
-    ],
-    "shared_relationships": [
-      {{
-        "relationship": "Customer-Orders",
-        "found_in_databases": ["db1", "db2"],
-        "relationship_type": "one-to-many",
-        "implementation_differences": ["Different foreign key naming", "Different status values"]
+    }},
+    "data_integration_blueprint": {{
+      "unified_data_model": {{
+        "customer_unified_schema": {{
+          "standard_fields": ["id", "email", "first_name", "last_name", "created_at"],
+          "platform_specific_mappings": {{
+            "shopify": {{"shop_id": "tenant_id", "total_spent": "lifetime_value"}},
+            "magento": {{"entity_id": "id", "firstname": "first_name"}},
+            "woocommerce": {{"ID": "id", "user_login": "username", "user_email": "email"}}
+          }}
+        }},
+        "order_unified_schema": {{
+          "standard_fields": ["id", "customer_id", "order_number", "total_amount", "status", "created_at"],
+          "platform_specific_mappings": {{
+            "shopify": {{"order_number": "order_number", "financial_status": "payment_status"}},
+            "magento": {{"increment_id": "order_number", "grand_total": "total_amount"}},
+            "woocommerce": {{"post_title": "order_title", "post_content": "order_details"}}
+          }}
+        }},
+        "product_unified_schema": {{
+          "standard_fields": ["id", "name", "sku", "price", "description", "category"],
+          "platform_specific_mappings": {{
+            "shopify": {{"title": "name", "handle": "slug", "vendor": "brand"}},
+            "magento": {{"entity_id": "id", "sku": "sku"}},
+            "woocommerce": {{"post_title": "name", "post_content": "description"}}
+          }}
+        }}
+      }},
+      "integration_strategies": {{
+        "api_gateway_approach": {{
+          "description": "Unified API layer over multiple databases",
+          "implementation": "GraphQL federation or REST API gateway",
+          "benefits": ["Single interface", "Platform abstraction"],
+          "complexity": "High"
+        }},
+        "data_warehouse_approach": {{
+          "description": "ETL pipeline to unified data warehouse",
+          "implementation": "Batch processing with real-time updates",
+          "benefits": ["Analytics ready", "Historical data"],
+          "complexity": "Medium"
+        }},
+        "event_streaming_approach": {{
+          "description": "Event-driven integration using message queues",
+          "implementation": "Apache Kafka or AWS Kinesis",
+          "benefits": ["Real-time sync", "Loose coupling"],
+          "complexity": "High"
+        }}
       }}
-    ]
-  }},
-  "implementation_patterns": {{
-    "naming_conventions": {{
-      "consistent_patterns": ["snake_case for most databases"],
-      "inconsistencies": ["user vs customer", "order_id vs order_number"],
-      "recommendations": ["Standardize on 'customer' entity naming"]
     }},
-    "data_types": {{
-      "common_approaches": ["DECIMAL for monetary values", "TIMESTAMP for dates"],
-      "variations": ["Different precision for decimals", "Date vs DateTime usage"],
-      "best_practices": ["Use consistent decimal precision across platforms"]
+    "business_logic_extraction": {{
+      "common_business_rules": [
+        "Customer email addresses must be unique within the system",
+        "Orders must be associated with valid customer records",
+        "Product SKUs must be unique for inventory tracking",
+        "Order totals must be calculated from line items"
+      ],
+      "platform_specific_rules": {{
+        "shopify": [
+          "Shop-specific customer isolation",
+          "Order numbering per shop",
+          "Financial status tracking for payment processing"
+        ],
+        "magento": [
+          "Entity-based attribute system",
+          "Flexible product attribute management",
+          "Website/store view hierarchy"
+        ],
+        "woocommerce": [
+          "WordPress user integration",
+          "Post-based product management",
+          "Content-driven product catalog"
+        ]
+      }},
+      "workflow_patterns": {{
+        "customer_journey": "Registration → Profile Management → Order Placement → Order History",
+        "order_processing": "Order Creation → Payment Processing → Fulfillment → Delivery",
+        "product_management": "Product Creation → Inventory Management → Catalog Display → Sales Tracking"
+      }}
     }},
-    "indexing_strategies": {{
-      "common_indexes": ["email indexes", "foreign key indexes"],
-      "missing_opportunities": ["Composite indexes for queries", "Full-text search indexes"],
-      "performance_insights": ["All databases index primary identifiers similarly"]
+    "performance_optimization_insights": {{
+      "common_bottlenecks": [
+        "Unindexed foreign key relationships",
+        "Large table scans for customer lookups",
+        "Complex joins in order history queries",
+        "Missing composite indexes for filtering"
+      ],
+      "platform_specific_optimizations": {{
+        "shopify": ["Shop-based partitioning", "Customer order history caching"],
+        "magento": ["EAV query optimization", "Attribute indexing strategy"],
+        "woocommerce": ["WordPress query optimization", "Post meta caching"]
+      }},
+      "scaling_recommendations": {{
+        "immediate": ["Add missing indexes", "Implement query result caching"],
+        "medium_term": ["Database partitioning", "Read replica deployment"],
+        "long_term": ["Microservices architecture", "Event-driven data flow"]
+      }}
+    }},
+    "security_and_compliance": {{
+      "data_protection": {{
+        "pii_handling": "Email addresses and customer data need encryption",
+        "access_control": "Role-based access control for multi-tenant systems",
+        "audit_trail": "Comprehensive logging for compliance requirements"
+      }},
+      "platform_specific_security": {{
+        "shopify": "Multi-tenant data isolation",
+        "magento": "Enterprise-grade security features",
+        "woocommerce": "WordPress security considerations"
+      }}
+    }},
+    "migration_roadmap": {{
+      "complexity_assessment": "Medium to High - significant architectural differences",
+      "migration_phases": [
+        {{
+          "phase": "Data Mapping and Validation",
+          "duration": "2-3 weeks",
+          "activities": ["Schema mapping", "Data quality assessment", "Business rule validation"]
+        }},
+        {{
+          "phase": "Pilot Migration",
+          "duration": "1-2 weeks", 
+          "activities": ["Small dataset migration", "Testing and validation", "Performance assessment"]
+        }},
+        {{
+          "phase": "Full Migration",
+          "duration": "4-6 weeks",
+          "activities": ["Complete data migration", "System integration", "User acceptance testing"]
+        }}
+      ],
+      "risk_mitigation": [
+        "Parallel system operation during transition",
+        "Comprehensive data validation and reconciliation",
+        "Rollback procedures and backup strategies"
+      ]
     }}
-  }},
-  "architectural_differences": {{
-    "normalization_approaches": {{
-      "database1": "3NF with traditional relational design",
-      "database2": "EAV model for flexibility",
-      "database3": "Denormalized for WordPress integration"
-    }},
-    "scalability_patterns": {{
-      "horizontal_scaling": ["database1 uses sharding-friendly design"],
-      "vertical_scaling": ["database2 optimized for single-server performance"],
-      "hybrid_approaches": ["database3 uses caching-friendly structure"]
-    }}
-  }},
-  "integration_opportunities": {{
-    "data_standardization": [
-      {{
-        "area": "Customer Data",
-        "current_variations": ["Different field names", "Different validation rules"],
-        "standardization_approach": "Create unified customer schema",
-        "effort_estimate": "medium"
-      }}
-    ],
-    "api_unification": [
-      {{
-        "endpoint_type": "Customer Management",
-        "common_operations": ["create", "update", "get", "list"],
-        "implementation_differences": ["Different response formats", "Different error handling"],
-        "unification_strategy": "GraphQL federation or REST API gateway"
-      }}
-    ],
-    "data_migration_paths": [
-      {{
-        "from_platform": "database1",
-        "to_platform": "database2", 
-        "complexity": "medium",
-        "key_challenges": ["Schema transformation", "Data type conversion"],
-        "migration_strategy": "ETL pipeline with data validation"
-      }}
-    ]
-  }},
-  "best_practices_analysis": {{
-    "security_patterns": {{
-      "common_approaches": ["Password hashing", "Email validation"],
-      "gaps_identified": ["Inconsistent PII handling", "Missing audit trails"],
-      "recommendations": ["Implement consistent encryption", "Add comprehensive logging"]
-    }},
-    "performance_optimizations": {{
-      "successful_patterns": ["Indexed foreign keys", "Efficient pagination"],
-      "improvement_opportunities": ["Add query optimization", "Implement caching layers"],
-      "scaling_recommendations": ["Consider read replicas", "Implement connection pooling"]
-    }}
-  }},
-  "industry_insights": {{
-    "standard_compliance": "How well do these implementations follow industry standards",
-    "innovation_areas": ["Unique approaches that could be adopted by others"],
-    "evolution_trends": ["How these schemas reflect industry evolution"]
   }}
 }}
 
-Focus specifically on finding commonalities and variations rather than analyzing each database in isolation.
+Focus on providing DEEP INSIGHTS that would help engineers understand the data models, business logic, and integration opportunities across all platforms. Be specific about architectural differences, data mapping strategies, and implementation recommendations.
         """
 
     def _parse_response(self, response_text: str) -> Dict[str, Any]:

@@ -1,0 +1,270 @@
+{
+  "metadata": {
+    "database_name": "sakila_database",
+    "file_path": "New_DB/sakila.db",
+    "analysis_timestamp": "2025-08-22T18:36:50.280854",
+    "file_size_bytes": "5.6 MB",
+    "generated_graphs": 8
+  },
+  "business_analysis": {
+    "domain": {
+      "primary_domain": "Video Rental Store",
+      "sub_domains": [
+        "Inventory Management",
+        "Customer Relationship Management (CRM)",
+        "Rental Management",
+        "Financial Management"
+      ],
+      "confidence_score": 98,
+      "domain_evidence": [
+        "Table names (actor, film, customer, rental, payment, inventory, staff)",
+        "Relationships between tables (e.g., film_actor, film_category)",
+        "Data types (e.g., rental_rate, replacement_cost)"
+      ],
+      "business_processes": [
+        "Film rental and return",
+        "Customer account management",
+        "Inventory tracking",
+        "Payment processing",
+        "Staff management"
+      ]
+    },
+    "architecture": {
+      "design_pattern": "Entity-Relationship Model",
+      "normalization_level": "3NF (mostly)",
+      "architectural_style": "Traditional Relational",
+      "flexibility_score": 80,
+      "scalability_indicators": [
+        "Proper indexing in most tables",
+        "Normalized structure reduces data redundancy",
+        "Use of SMALLINT for IDs where appropriate"
+      ]
+    },
+    "entities": {
+      "core_entities": [
+        {
+          "entity_name": "Film",
+          "table_name": "film",
+          "key_attributes": [
+            "film_id",
+            "title"
+          ],
+          "business_purpose": "Stores information about each film in the inventory.",
+          "data_volume": "Medium",
+          "update_frequency": "Low"
+        },
+        {
+          "entity_name": "Customer",
+          "table_name": "customer",
+          "key_attributes": [
+            "customer_id",
+            "email"
+          ],
+          "business_purpose": "Stores customer details, including contact information and rental history.",
+          "data_volume": "Medium",
+          "update_frequency": "Low"
+        },
+        {
+          "entity_name": "Staff",
+          "table_name": "staff",
+          "key_attributes": [
+            "staff_id",
+            "username"
+          ],
+          "business_purpose": "Manages staff accounts and their associated information.",
+          "data_volume": "Very Low",
+          "update_frequency": "Low"
+        },
+        {
+          "entity_name": "Inventory",
+          "table_name": "inventory",
+          "key_attributes": [
+            "inventory_id"
+          ],
+          "business_purpose": "Tracks the availability of films at each store location.",
+          "data_volume": "High",
+          "update_frequency": "Medium"
+        }
+      ],
+      "relationships": [
+        {
+          "relationship_name": "Film-Actor",
+          "parent_entity": "Film",
+          "child_entity": "Actor",
+          "relationship_type": "many-to-many",
+          "business_meaning": "A film can have multiple actors, and an actor can be in multiple films.",
+          "cardinality": "M:N",
+          "foreign_key": "film_actor.film_id -> film.film_id, film_actor.actor_id -> actor.actor_id"
+        },
+        {
+          "relationship_name": "Film-Category",
+          "parent_entity": "Film",
+          "child_entity": "Category",
+          "relationship_type": "many-to-many",
+          "business_meaning": "A film can belong to multiple categories, and a category can contain multiple films.",
+          "cardinality": "M:N",
+          "foreign_key": "film_category.film_id -> film.film_id, film_category.category_id -> category.category_id"
+        },
+        {
+          "relationship_name": "Rental-Customer",
+          "parent_entity": "Rental",
+          "child_entity": "Customer",
+          "relationship_type": "many-to-one",
+          "business_meaning": "A customer can have multiple rentals, but a rental belongs to only one customer.",
+          "cardinality": "N:1",
+          "foreign_key": "rental.customer_id -> customer.customer_id"
+        },
+        {
+          "relationship_name": "Rental-Inventory",
+          "parent_entity": "Rental",
+          "child_entity": "Inventory",
+          "relationship_type": "many-to-one",
+          "business_meaning": "A rental involves one inventory item.",
+          "cardinality": "N:1",
+          "foreign_key": "rental.inventory_id -> inventory.inventory_id"
+        },
+        {
+          "relationship_name": "Payment-Rental",
+          "parent_entity": "Payment",
+          "child_entity": "Rental",
+          "relationship_type": "many-to-one",
+          "business_meaning": "A payment is associated with a rental (can be NULL if payment is made separately).",
+          "cardinality": "N:1",
+          "foreign_key": "payment.rental_id -> rental.rental_id"
+        }
+      ],
+      "entity_hierarchy": {
+        "master_entities": [
+          "Film",
+          "Customer",
+          "Staff",
+          "Category",
+          "Address",
+          "Country",
+          "City",
+          "Language"
+        ],
+        "transaction_entities": [
+          "Rental",
+          "Payment",
+          "Inventory"
+        ],
+        "reference_entities": []
+      }
+    },
+    "use_cases": {
+      "primary_use_cases": [
+        {
+          "use_case": "Film Rental",
+          "description": "Customers rent films, and the system tracks rentals, returns, and payments.",
+          "data_entities": [
+            "Film",
+            "Customer",
+            "Rental",
+            "Payment",
+            "Inventory"
+          ],
+          "business_value": "Core business functionality; generates revenue."
+        },
+        {
+          "use_case": "Inventory Management",
+          "description": "Tracking film availability and managing inventory levels.",
+          "data_entities": [
+            "Film",
+            "Inventory",
+            "Store"
+          ],
+          "business_value": "Ensures efficient film management and prevents stockouts."
+        },
+        {
+          "use_case": "Customer Relationship Management (CRM)",
+          "description": "Managing customer accounts, tracking rental history, and providing customer support.",
+          "data_entities": [
+            "Customer",
+            "Rental",
+            "Payment"
+          ],
+          "business_value": "Improves customer satisfaction and loyalty."
+        }
+      ],
+      "analytics_opportunities": [
+        "Popular film analysis (most rented films).",
+        "Customer segmentation (frequent renters vs. infrequent renters).",
+        "Revenue analysis (total revenue, revenue per film, revenue per customer).",
+        "Inventory optimization (identifying films that need to be restocked).",
+        "Customer churn analysis."
+      ],
+      "integration_points": [
+        "Point-of-sale (POS) system integration.",
+        "Payment gateway integration.",
+        "Customer relationship management (CRM) system integration.",
+        "Inventory management system integration."
+      ]
+    },
+    "migration": {
+      "complexity_assessment": "Medium complexity; the database is relatively well-structured but requires performance optimization and addressing the `film_text` table.",
+      "migration_effort": "1-2 months for optimization and addressing immediate concerns; longer for a full migration to a different database system.",
+      "risk_factors": [
+        "Data volume (especially in `inventory`, `rental`, and `payment` tables).",
+        "Downtime during migration (if a direct migration is chosen)."
+      ],
+      "migration_strategy": "Phased migration is recommended; optimize the existing SQLite database first, then consider migrating to a more scalable system if needed.  A phased approach minimizes downtime and risk."
+    }
+  },
+  "technical_analysis": {
+    "data_quality": {
+      "integrity_analysis": {
+        "referential_integrity": "Well-maintained with foreign key constraints (mostly).  `film_text` table seems detached.",
+        "data_consistency": "High due to normalization and constraints.",
+        "completeness_score": 90,
+        "accuracy_indicators": [
+          "Proper data types",
+          "Constraint enforcement",
+          "Indexes on foreign keys"
+        ]
+      },
+      "quality_issues": [
+        "The `film_text` table appears unused or incomplete, lacking foreign key relationships.",
+        "Potential for null values in some fields (e.g., email addresses) that might need to be enforced as NOT NULL.",
+        "Missing indexes on some columns might impact query performance (e.g., `film.title`)."
+      ],
+      "data_governance": {
+        "pii_handling": "PII (Personally Identifiable Information) such as customer names and email addresses are stored; encryption should be considered.",
+        "audit_trail": "Basic timestamp tracking (`last_update`) is present in most tables.",
+        "data_retention": "No explicit retention policies are visible."
+      }
+    },
+    "performance": {
+      "query_patterns": [
+        "Retrieving film details by title or category.",
+        "Searching for customers by name or email.",
+        "Generating reports on rental history and revenue.",
+        "Checking film availability.",
+        "Processing payments."
+      ],
+      "bottleneck_identification": [
+        "Potential for slow queries on large tables without appropriate indexes (especially `film`, `customer`, `rental`, `payment`, `inventory`).",
+        "Complex joins involving multiple tables might be slow without proper indexing."
+      ],
+      "optimization_opportunities": [
+        "Add composite indexes to improve join performance (e.g., `rental` table: (customer_id, inventory_id, rental_date)).",
+        "Add indexes on frequently queried columns (e.g., `film.title`, `customer.last_name`, `customer.email`).",
+        "Consider database caching mechanisms.",
+        "Analyze query execution plans to identify and address performance bottlenecks."
+      ],
+      "scalability_assessment": {
+        "current_capacity": "Medium scale, suitable for a moderately sized video rental store.",
+        "scaling_challenges": [
+          "Single database instance; scaling might require vertical scaling or database replication.",
+          "Limited partitioning capabilities in SQLite."
+        ],
+        "scaling_recommendations": [
+          "Consider migrating to a more scalable database system (e.g., PostgreSQL, MySQL) if needed.",
+          "Implement database sharding or replication for improved scalability."
+        ]
+      }
+    },
+    "schema": {
+      "actor": {
+        "columns": 4,
+        "rows": 
