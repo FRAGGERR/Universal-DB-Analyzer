@@ -37,32 +37,95 @@ print_header() {
 check_requirements() {
     print_status "Checking system requirements..."
     
-    if ! command -v python3 &> /dev/null; then
-        print_error "Python 3 is not installed or not in PATH"
+    # Try to find the correct Python executable
+    local python_cmd=""
+    if command -v python3 &> /dev/null; then
+        python_cmd="python3"
+    elif command -v python &> /dev/null; then
+        python_cmd="python"
+    else
+        print_error "Python is not installed or not in PATH"
         exit 1
     fi
     
-    if ! python3 -c "import dotenv" &> /dev/null; then
+    print_status "Using Python: $($python_cmd --version)"
+    
+    # Check if we can import the required modules
+    if ! $python_cmd -c "import dotenv" &> /dev/null; then
         print_warning "python-dotenv not found. Installing..."
-        pip3 install python-dotenv
+        $python_cmd -m pip install python-dotenv
     fi
     
-    if ! python3 -c "import pandas" &> /dev/null; then
+    if ! $python_cmd -c "import pandas" &> /dev/null; then
         print_warning "pandas not found. Installing..."
-        pip3 install pandas
+        $python_cmd -m pip install pandas
     fi
     
-    if ! python3 -c "import matplotlib" &> /dev/null; then
+    if ! $python_cmd -c "import matplotlib" &> /dev/null; then
         print_warning "matplotlib not found. Installing..."
-        pip3 install matplotlib
+        $python_cmd -m pip install matplotlib
     fi
     
-    if ! python3 -c "import seaborn" &> /dev/null; then
+    if ! $python_cmd -c "import seaborn" &> /dev/null; then
         print_warning "seaborn not found. Installing..."
-        pip3 install seaborn
+        $python_cmd -m pip install seaborn
     fi
+    
+    if ! $python_cmd -c "import sqlalchemy" &> /dev/null; then
+        print_warning "sqlalchemy not found. Installing..."
+        $python_cmd -m pip install sqlalchemy
+    fi
+    
+    if ! $python_cmd -c "import pymongo" &> /dev/null; then
+        print_warning "pymongo not found. Installing..."
+        $python_cmd -m pip install pymongo
+    fi
+    
+    if ! $python_cmd -c "import google.generativeai" &> /dev/null; then
+        print_warning "google-generativeai not found. Installing..."
+        $python_cmd -m pip install google-generativeai
+    fi
+    
+    if ! $python_cmd -c "import plotly" &> /dev/null; then
+        print_warning "plotly not found. Installing..."
+        $python_cmd -m pip install plotly
+    fi
+    
+    if ! $python_cmd -c "import networkx" &> /dev/null; then
+        print_warning "networkx not found. Installing..."
+        $python_cmd -m pip install networkx
+    fi
+    
+    # Store the python command for later use
+    PYTHON_CMD="$python_cmd"
     
     print_status "All requirements satisfied!"
+}
+
+# Function to verify Python environment and test the analyzer script
+verify_python_environment() {
+    print_status "Verifying Python environment..."
+    
+    # Test if we can import the required modules
+    if ! $PYTHON_CMD -c "import dotenv; print('✓ dotenv imported successfully')" &> /dev/null; then
+        print_error "Failed to import dotenv module"
+        return 1
+    fi
+    
+    # Test if the universal analyzer script exists and can be imported
+    if [ ! -f "universal_database_analyzer.py" ]; then
+        print_error "universal_database_analyzer.py not found!"
+        return 1
+    fi
+    
+    # Test if the script can be run (basic syntax check)
+    if ! $PYTHON_CMD -m py_compile "universal_database_analyzer.py" &> /dev/null; then
+        print_error "universal_database_analyzer.py has syntax errors!"
+        return 1
+    fi
+    
+    print_status "✓ Python environment verified successfully!"
+    return 0
 }
 
 # Function to check if .env file exists with API key
@@ -90,15 +153,28 @@ analyze_database() {
     
     print_status "Analyzing database: $db_name"
     
-    # Run the analysis using the universal analyzer
-    python3 universal_database_analyzer.py "$db_path" "$db_name" "" "" true false
-    
-    if [ $? -eq 0 ]; then
-        print_status "✅ Analysis completed for $db_name"
+    # First try the universal analyzer
+    print_status "Attempting analysis with universal analyzer..."
+    if $PYTHON_CMD universal_database_analyzer.py "$db_path" --name "$db_name" --output-dir "${db_name}_analysis"; then
+        print_status "✅ Analysis completed for $db_name using universal analyzer"
         return 0
     else
-        print_error "❌ Analysis failed for $db_name"
-        return 1
+        print_warning "Universal analyzer failed, trying fallback method..."
+        
+        # Fallback to analyze_any_database.py
+        if [ -f "analyze_any_database.py" ]; then
+            print_status "Using fallback analyzer: analyze_any_database.py"
+            if $PYTHON_CMD analyze_any_database.py "$db_path" --name "$db_name"; then
+                print_status "✅ Analysis completed for $db_name using fallback analyzer"
+                return 0
+            else
+                print_error "❌ Both analyzers failed for $db_name"
+                return 1
+            fi
+        else
+            print_error "❌ Universal analyzer failed and fallback analyzer not found"
+            return 1
+        fi
     fi
 }
 
@@ -115,17 +191,27 @@ analyze_all_databases() {
     local db_files=()
     local db_names=()
     
+    print_status "Searching for database files in New_DB folder..."
+    
     # Look for common database file extensions
     for ext in db sqlite sqlite3; do
+        print_status "Looking for *.$ext files..."
         while IFS= read -r -d '' file; do
+            print_status "Found database file: $file"
             db_files+=("$file")
-            db_names+=("$(basename "$file" ".$ext")")
+            # Extract name without extension more reliably
+            local filename=$(basename "$file")
+            local name_without_ext="${filename%.*}"
+            print_status "Extracted name: $name_without_ext"
+            db_names+=("$name_without_ext")
         done < <(find "New_DB" -name "*.$ext" -print0 2>/dev/null)
     done
     
     if [ ${#db_files[@]} -eq 0 ]; then
         print_warning "No database files found in New_DB folder!"
         echo "Supported formats: .db, .sqlite, .sqlite3"
+        echo "Current New_DB folder contents:"
+        ls -la "New_DB/"
         exit 1
     fi
     
@@ -299,6 +385,13 @@ main() {
     
     # Check requirements
     check_requirements
+    
+    # Verify Python environment and test the analyzer script
+    if ! verify_python_environment; then
+        print_error "Python environment verification failed!"
+        print_error "Please check the error messages above and fix the issues."
+        exit 1
+    fi
     
     # Check API key
     check_api_key
