@@ -1,0 +1,24 @@
+# Environment
+.env
+.env.*
+
+# Node
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime/generated
+uploads/
+analysis_results/
+reports/
+consolidated_analysis/
+
+# Builds
+coverage/
+dist/
+build/

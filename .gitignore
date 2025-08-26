@@ -178,6 +178,53 @@ cython_debug/
 #  - .idea/libraries/
 #  - .idea/jarRepositories/
 #  - .idea/compiler/
+# Security-focused ignores (appended)
+
+# macOS
+.DS_Store
+
+# Editors/IDE
+.vscode/
+*.swp
+
+# Additional env patterns
+.env.*
+*.env
+*.env.*
+
+# Node
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts / coverage
+coverage/
+
+# Databases & local data
+New_DB/*.db
+New_DB/*.sqlite
+*.db
+*.sqlite
+
+# Web app backend runtime/generated data
+web-app/backend/uploads/
+web-app/backend/analysis_results/
+web-app/backend/reports/
+web-app/backend/consolidated_analysis/
+
+# Web app frontend build & env
+web-app/frontend/build/
+web-app/frontend/.env
+web-app/frontend/.env.*
+
+# Backend env files
+web-app/backend/.env
+web-app/backend/.env.*
 #  - .idea/encodings/
 #  - .idea/shelf/
 #  - .idea/workspace/

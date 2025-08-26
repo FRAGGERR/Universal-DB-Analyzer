@@ -1,0 +1,31 @@
+{
+  "name": "database-analysis-web-app",
+  "version": "1.0.0",
+  "description": "Web application for AI-powered database reverse engineering analysis",
+  "main": "backend/server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "start": "cd backend && npm start",
+    "vercel-build": "cd frontend && npm run build"
+  },
+  "keywords": [
+    "database",
+    "analysis",
+    "ai",
+    "reverse-engineering",
+    "react",
+    "nodejs"
+  ],
+  "author": "Hardik Chhipa",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "formidable": "^3.5.1"
+  }
+}
